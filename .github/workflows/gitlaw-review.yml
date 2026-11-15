@@ -1,0 +1,35 @@
+name: GitLaw Convention Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  audit-conventions:
+    name: Audit Team Conventions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install GitLaw
+        run: |
+          npm ci
+          npm run build
+
+      - name: Run GitLaw Review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Obtain unified git diff against base branch
+          git diff origin/${{ github.base_ref }}...HEAD > pr.diff
+          node dist/cli/index.js review --diff pr.diff

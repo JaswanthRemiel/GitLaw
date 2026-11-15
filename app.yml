@@ -1,0 +1,14 @@
+name: GitLaw PR Reviewer
+url: https://github.com/JaswanthRemiel/GitLaw
+description: PR reviewer that mines past PR review comments to learn team conventions, then flags new PRs that break them.
+hook_attributes:
+  url: https://your-server.com/api/github/webhooks
+default_permissions:
+  pull_requests: write
+  issues: write
+  checks: write
+  contents: read
+default_events:
+  - pull_request
+  - pull_request_review_comment
+  - issue_comment

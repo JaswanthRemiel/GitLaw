@@ -1,0 +1,109 @@
+[
+  {
+    "id": "use-result-type-for-errors",
+    "title": "Use Result/Either type instead of throwing raw exceptions in domain services",
+    "category": "error-handling",
+    "description": "Domain services must return Result<T, E> rather than throwing raw Error instances to force explicit error handling by callers.",
+    "guidelines": [
+      "Do not throw Error in service methods",
+      "Return Result.ok(data) or Result.fail(error)",
+      "Handle errors explicitly at controller or route boundaries"
+    ],
+    "positiveExamples": [
+      "return Result.ok(user);",
+      "return Result.fail(new NotFoundError('User not found'));"
+    ],
+    "negativeExamples": [
+      "throw new Error('User not found');"
+    ],
+    "applicableGlobs": [
+      "**/*.service.ts",
+      "src/domain/**/*.ts"
+    ],
+    "severity": "error",
+    "confidence": 0.95,
+    "occurrenceCount": 4,
+    "evidence": [
+      {
+        "prNumber": 104,
+        "author": "tech-lead",
+        "commentBody": "Please do not throw raw Error here; return Result.fail so caller is forced to handle it.",
+        "createdAt": "2026-01-10T12:00:00Z"
+      },
+      {
+        "prNumber": 118,
+        "author": "senior-arch",
+        "commentBody": "Convention reminder: all methods in *.service.ts must return Result<T, DomainError> instead of throwing.",
+        "createdAt": "2026-02-14T15:30:00Z"
+      }
+    ],
+    "createdAt": "2026-01-10T12:00:00Z",
+    "updatedAt": "2026-02-14T15:30:00Z"
+  },
+  {
+    "id": "always-specify-table-indexes-in-migrations",
+    "title": "Always add index on foreign key columns in database migrations",
+    "category": "performance",
+    "description": "Every foreign key column must have an explicit index defined to avoid full table scans during joins and delete cascades.",
+    "guidelines": [
+      "Define an index on every foreign key column",
+      "Follow naming convention idx_<table_name>_<column_name>"
+    ],
+    "positiveExamples": [
+      "table.index(['organization_id', 'created_at'], 'idx_memberships_org_created');"
+    ],
+    "negativeExamples": [
+      "table.integer('organization_id').references('id').inTable('organizations'); // missing index"
+    ],
+    "applicableGlobs": [
+      "**/migrations/**/*.ts",
+      "**/migrations/**/*.sql"
+    ],
+    "severity": "warning",
+    "confidence": 0.92,
+    "occurrenceCount": 3,
+    "evidence": [
+      {
+        "prNumber": 89,
+        "author": "dba-lead",
+        "commentBody": "Missing index on organization_id. FK columns must always have an explicit index in migrations.",
+        "createdAt": "2026-01-02T10:15:00Z"
+      }
+    ],
+    "createdAt": "2026-01-02T10:15:00Z",
+    "updatedAt": "2026-01-02T10:15:00Z"
+  },
+  {
+    "id": "no-direct-console-logging",
+    "title": "Use structured logger instead of console.log/console.error in application code",
+    "category": "architecture",
+    "description": "Direct console calls bypass structured JSON logging, trace context, and log level filtering in production.",
+    "guidelines": [
+      "Inject logger service or import app logger",
+      "Include context metadata in log statements"
+    ],
+    "positiveExamples": [
+      "logger.info('Processing order', { orderId: order.id, userId });"
+    ],
+    "negativeExamples": [
+      "console.log('Processing order ' + order.id);"
+    ],
+    "applicableGlobs": [
+      "src/**/*.ts",
+      "src/**/*.js"
+    ],
+    "severity": "warning",
+    "confidence": 0.89,
+    "occurrenceCount": 5,
+    "evidence": [
+      {
+        "prNumber": 62,
+        "author": "devops-eng",
+        "commentBody": "Please replace console.log with our structured logger instance.",
+        "createdAt": "2025-12-20T08:00:00Z"
+      }
+    ],
+    "createdAt": "2025-12-20T08:00:00Z",
+    "updatedAt": "2025-12-20T08:00:00Z"
+  }
+]

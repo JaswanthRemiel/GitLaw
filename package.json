@@ -1,0 +1,54 @@
+{
+  "name": "gitlaw",
+  "version": "1.0.0",
+  "description": "PR reviewer that learns team conventions by mining past PR review comments",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "gitlaw": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli/index.js",
+    "dev": "tsx src/cli/index.ts",
+    "serve": "tsx src/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JaswanthRemiel/GitLaw.git"
+  },
+  "keywords": [
+    "github-app",
+    "pr-review",
+    "code-review",
+    "linter",
+    "team-conventions",
+    "ai-agent",
+    "probot",
+    "vector-search"
+  ],
+  "author": "GitLaw",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^21.1.1",
+    "better-sqlite3": "^11.8.1",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "openai": "^4.86.1",
+    "parse-diff": "^0.11.1",
+    "picomatch": "^4.0.2",
+    "probot": "^13.4.3",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.13.9",
+    "@types/picomatch": "^3.0.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  }
+}
